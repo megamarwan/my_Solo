@@ -9,12 +9,27 @@
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@fontsource/roboto": "^5.2.9",
+    "@heyputer/puter.js": "^2.2.5",
+    "@mui/icons-material": "^7.3.7",
+    "@mui/material": "^7.3.7",
     "@react-router/node": "7.12.0",
     "@react-router/serve": "7.12.0",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^10.0.0-alpha.2",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "isbot": "^5.1.31",
+    "lucide-react": "^0.563.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "react-router": "7.12.0"
+    "react-router": "7.12.0",
+    "tailwind-merge": "^3.4.0",
+    "tailwindcss-animate": "^1.0.7",
+    "three": "^0.182.0",
+    "three-globe": "^2.45.0"
   },
   "devDependencies": {
     "@react-router/dev": "7.12.0",
