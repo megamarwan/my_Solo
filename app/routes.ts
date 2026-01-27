@@ -14,4 +14,6 @@ export default [
     
     // Product Management
     route("productUpload", "routes/productUpload.tsx"),
+    route("create", "routes/create.tsx"),
+    route('doodling', 'routes/doodling.tsx')
 ] satisfies RouteConfig;

@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin, Clock, ArrowLeft } from "lucide-react";
+import { Mail, Phone, MapPin, Clock, ArrowLeft , DamIcon   } from "lucide-react";
 import { useNavigate } from "react-router";
 
 export default function Contact() {
@@ -34,14 +34,21 @@ export default function Contact() {
   return (
     <div className="min-h-screen bg-[#04071d] text-white flex flex-col items-center justify-center p-6">
       <div className="max-w-4xl w-full">
-        
+
         {/* Back Button */}
-        <button 
+        <button
           onClick={() => navigate(-1)}
           className="flex items-center gap-2 text-gray-400 hover:text-orange-500 transition-colors mb-8 group"
         >
           <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
           Back to Home
+        </button>
+        <button
+          onClick={() => navigate('/doodling')}
+          className="flex items-center gap-2 text-gray-400 hover:text-orange-500 transition-colors mb-8 group"
+        >
+          <DamIcon size={20} className="group-hover:-translate-x-1 transition-transform" />
+          doodling around
         </button>
 
         {/* Header */}
