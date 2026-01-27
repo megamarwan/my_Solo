@@ -8,11 +8,20 @@ import puter from "@heyputer/puter.js"; // Import puter
 import { Spotlight } from "C:/Users/pc/Desktop/my_Solo/app/components/ui/spotlight";
 
 const Globe = lazy(() => import("../components/Globe"));
+export function meta({ }: Route.MetaArgs) {
+  return [
+    { title: "Biznas | Start here" },
+    { name: "description", content: "Manage your cloud merchandise and local blogs." },
+  ];
+}
 
 export default function Home() {
+
+
   const navigate = useNavigate();
   const [isClient, setIsClient] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
 
   useEffect(() => {
     setIsClient(true);
@@ -30,13 +39,13 @@ export default function Home() {
     },
     {
       // DYNAMIC ITEM: Shows "My Profile" if logged in, otherwise "Join Us"
-      title: isAuthenticated ? "My Profile" : "Join Us",
-      description: isAuthenticated 
-        ? "Access your dashboard and manage your merchandise." 
-        : "Create an account to browse thousands of verified products.",
+      title: isAuthenticated ? "My Profile" : "Login or Sign up",
+      description: isAuthenticated
+        ? "Access your dashboard and manage your merchandise."
+        : "Login or Create an account to browse thousands of verified products.",
       path: isAuthenticated ? "/profile" : "/authentication",
-      icon: isAuthenticated 
-        ? <User className="text-orange-500" size={24} /> 
+      icon: isAuthenticated
+        ? <User className="text-orange-500" size={24} />
         : <UserCircle className="text-orange-500" size={24} />,
     },
     {
@@ -57,7 +66,7 @@ export default function Home() {
             Biznas <span className="text-orange-500">Libya</span>
           </h1>
           <p className="mt-4 text-neutral-400 max-w-lg mx-auto text-lg">
-            The future of shopping in Tripoli. High-end merchandise, 
+            The future of shopping in Tripoli. High-end merchandise,
             delivered with global standards.
           </p>
         </div>
@@ -70,7 +79,7 @@ export default function Home() {
               className="group relative p-6 rounded-2xl border border-white/[0.08] bg-[#0c0e23]/50 backdrop-blur-sm hover:bg-[#161a31] transition-all duration-500 text-left flex flex-col justify-between h-56 overflow-hidden"
             >
               <div className="absolute -right-4 -top-4 w-24 h-24 bg-orange-500/10 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
-              
+
               <div>
                 <div className="mb-4 p-2 bg-orange-500/10 border border-orange-500/20 w-fit rounded-lg shadow-inner">
                   {item.icon}
@@ -90,7 +99,7 @@ export default function Home() {
 
         <div className="relative w-full h-[500px] flex items-center justify-center">
           <div className="absolute inset-0 bg-orange-500/5 rounded-full blur-[120px] pointer-events-none" />
-          
+
           {isClient && (
             <Suspense fallback={<div className="w-64 h-64 border-2 border-orange-300/20 rounded-full animate-ping" />}>
               <div className="w-full h-full scale-110 md:scale-125">

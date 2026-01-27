@@ -3,15 +3,23 @@ import { useNavigate } from "react-router";
 import puter from "@heyputer/puter.js";
 import { Plus, User, Loader2, RefreshCw, LogOut, HomeIcon } from "lucide-react";
 import BlogList from "~/components/BlogList";
-import BlogCard from "~/components/BlogCard"; // Added Import
+import BlogCard from "~/components/BlogCard"; 
 import useFetch from "~/components/useFetch";
+import type { Route } from "./+types/profile"; // Ensure this matches your file name
+
+// 1. Updated Meta for the Profile Tab
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "Biznas | My Merchandise" }, 
+    { name: "description", content: "Manage your cloud merchandise and local blogs." },
+  ];
+} 
 
 export default function Profile() {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Fetching from your local json-server
   const { data: blogsData, isPending: blogsLoading } = useFetch<any[]>('http://localhost:8000/blogs/');
 
   const fetchFiles = async () => {
@@ -86,16 +94,26 @@ export default function Profile() {
             </div>
           </div>
 
-          <div className="flex gap-4">
-            <button onClick={() => { navigate('/') }} className="bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all border border-red-500/30">
-              <HomeIcon  size={18} /> to home page
+          {/* Grouped buttons for better spacing */}
+          <div className="flex flex-wrap justify-center gap-3">
+            <button 
+              onClick={() => navigate('/')} 
+              className="bg-white/5 hover:bg-white/10 text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all border border-white/10"
+            >
+              <HomeIcon size={18} /> Home
             </button>
-          </div>
-          <div className="flex gap-4">
-            <button onClick={handleSignOut} className="bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all border border-red-500/30">
+            
+            <button 
+              onClick={handleSignOut} 
+              className="bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all border border-red-500/30"
+            >
               <LogOut size={18} /> Sign Out
             </button>
-            <button onClick={() => navigate('/productUpload')} className="bg-orange-600 hover:bg-orange-500 px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all">
+
+            <button 
+              onClick={() => navigate('/productUpload')} 
+              className="bg-orange-600 hover:bg-orange-500 px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg shadow-orange-600/20"
+            >
               <Plus size={18} /> Add Product
             </button>
           </div>
@@ -121,7 +139,11 @@ export default function Profile() {
               {items.map(item => (
                 <BlogCard key={item.id} blog={item} onDelete={handleDeletePuterFile} />
               ))}
-              {items.length === 0 && <p className="text-gray-500 italic">No cloud items found.</p>}
+              {items.length === 0 && (
+                <div className="col-span-full py-12 border-2 border-dashed border-white/5 rounded-3xl text-center text-gray-500">
+                  No cloud items found.
+                </div>
+              )}
             </div>
           )}
         </section>
@@ -132,8 +154,11 @@ export default function Profile() {
             <span className="w-2 h-6 bg-blue-500 rounded-full"></span>
             Local Database Blogs
           </h2>
-          {blogsData && <BlogList blogs={blogsData} />}
-          {blogsLoading && <Loader2 className="animate-spin text-blue-500" />}
+          {blogsLoading ? (
+             <div className="flex justify-center py-10"><Loader2 className="animate-spin text-blue-500" size={32} /></div>
+          ) : (
+            blogsData && <BlogList blogs={blogsData} />
+          )}
         </section>
 
       </div>
