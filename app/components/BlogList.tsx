@@ -3,10 +3,12 @@ import BlogCard, { type Blog } from "./BlogCard";
 interface BlogListProps {
   blogs: Blog[];
   title?: string;
+  onDelete?: (id: any) => void; 
+  onEdit?: (blog: Blog) => void;
+  
 }
 
-const BlogList = ({ blogs, title }: BlogListProps) => {
-  // If no blogs are passed, show a friendly message
+const BlogList = ({ blogs, title, onDelete ,onEdit}: BlogListProps) => {
   if (blogs.length === 0) {
     return (
       <div className="text-center py-10 border-2 border-dashed border-white/10 rounded-3xl">
@@ -24,11 +26,16 @@ const BlogList = ({ blogs, title }: BlogListProps) => {
         </h2>
       )}
 
-      {/* Grid Layout: 1 column on mobile, 2 on tablet, 3 on desktop */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {blogs.map((blog) => (
-          <BlogCard key={blog.id} blog={blog} />
-        ))}
+       {blogs.map((blog) => (
+  <BlogCard 
+    key={blog.id} 
+    blog={blog} 
+    onDelete={onDelete}
+    // FIX: Make sure the blog object is passed into onEdit
+    onEdit={() => onEdit && onEdit(blog)} 
+  />
+))}
       </div>
     </div>
   );

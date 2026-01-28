@@ -2,12 +2,12 @@ import { useState, useEffect, lazy, Suspense } from "react";
 import type { Route } from "./+types/home";
 import { useNavigate } from "react-router";
 import { Info, UserCircle, MessageSquare, ArrowRight, User } from "lucide-react";
-import puter from "@heyputer/puter.js"; // Import puter
+import puter from "@heyputer/puter.js";
 
-// Aceternity-style Spotlight component
 import { Spotlight } from "C:/Users/pc/Desktop/my_Solo/app/components/ui/spotlight";
 
 const Globe = lazy(() => import("../components/Globe"));
+
 export function meta({ }: Route.MetaArgs) {
   return [
     { title: "Biznas | Start here" },
@@ -16,93 +16,91 @@ export function meta({ }: Route.MetaArgs) {
 }
 
 export default function Home() {
-
-
   const navigate = useNavigate();
   const [isClient, setIsClient] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-
   useEffect(() => {
     setIsClient(true);
-    // Check if user is logged into Puter
     setIsAuthenticated(puter.auth.isSignedIn());
   }, []);
 
-  // Define navItems inside the component so they can react to isAuthenticated
   const navItems = [
     {
       title: "Our Mission",
       description: "Bridging the gap between global brands and the Libyan market.",
       path: "/about",
-      icon: <Info className="text-orange-500" size={24} />,
+      icon: <Info className="text-orange-500" size={18} />,
     },
     {
-      // DYNAMIC ITEM: Shows "My Profile" if logged in, otherwise "Join Us"
       title: isAuthenticated ? "My Profile" : "Login or Sign up",
       description: isAuthenticated
         ? "Access your dashboard and manage your merchandise."
-        : "Login or Create an account to browse thousands of verified products.",
+        : "Login or Create an account to browse products.",
       path: isAuthenticated ? "/profile" : "/authentication",
       icon: isAuthenticated
-        ? <User className="text-orange-500" size={24} />
-        : <UserCircle className="text-orange-500" size={24} />,
+        ? <User className="text-orange-500" size={18} />
+        : <UserCircle className="text-orange-500" size={18} />,
     },
     {
       title: "Contact Us",
       description: "Visit our office in Bin Ashour or reach out online.",
       path: "/contact",
-      icon: <MessageSquare className="text-orange-500" size={24} />,
+      icon: <MessageSquare className="text-orange-500" size={18} />,
     },
   ];
 
   return (
-    <div className="relative min-h-screen w-full bg-[#010411] flex items-center justify-center overflow-hidden antialiased">
-      <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="white" />
+    // justify-start + pt-4 ensures the title stays at the top
+    <div className="relative h-screen w-full bg-[#010411] flex flex-col items-center justify-start overflow-hidden antialiased p-4 pt-8">
+      <Spotlight className="-top-40 left-0 md:left-60" fill="white" />
 
-      <div className="relative z-10 max-w-5xl w-full px-6 py-12">
-        <div className="mb-16 text-center">
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400">
+      <div className="relative z-10 max-w-5xl w-full flex flex-col items-center">
+        {/* Header - Reduced margin-bottom */}
+        <div className="mb-6 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400">
             Biznas <span className="text-orange-500">Libya</span>
           </h1>
-          <p className="mt-4 text-neutral-400 max-w-lg mx-auto text-lg">
-            The future of shopping in Tripoli. High-end merchandise,
-            delivered with global standards.
+          <p className="mt-1 text-neutral-400 max-w-sm mx-auto text-xs md:text-sm leading-tight">
+            High-end merchandise, delivered with global standards in Tripoli.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-20">
+        {/* Navigation Cards - Shorter height */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 w-full mb-4">
           {navItems.map((item, idx) => (
             <button
               key={idx}
               onClick={() => navigate(item.path)}
-              className="group relative p-6 rounded-2xl border border-white/[0.08] bg-[#0c0e23]/50 backdrop-blur-sm hover:bg-[#161a31] transition-all duration-500 text-left flex flex-col justify-between h-56 overflow-hidden"
+              className="group relative p-4 rounded-xl border border-white/[0.08] bg-[#0c0e23]/50 backdrop-blur-sm hover:bg-[#161a31] transition-all duration-500 text-left flex flex-col justify-between h-36 overflow-hidden"
             >
-              <div className="absolute -right-4 -top-4 w-24 h-24 bg-orange-500/10 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute -right-4 -top-4 w-16 h-16 bg-orange-500/10 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
 
               <div>
-                <div className="mb-4 p-2 bg-orange-500/10 border border-orange-500/20 w-fit rounded-lg shadow-inner">
+                <div className="mb-2 p-1 bg-orange-500/10 border border-orange-500/20 w-fit rounded-md">
                   {item.icon}
                 </div>
-                <h2 className="text-xl font-bold text-neutral-200">{item.title}</h2>
-                <p className="text-sm text-neutral-500 mt-2 leading-snug">
+                <h2 className="text-sm md:text-base font-bold text-neutral-200">{item.title}</h2>
+                <p className="text-[10px] text-neutral-500 mt-1 leading-tight line-clamp-2">
                   {item.description}
                 </p>
               </div>
 
-              <div className="flex items-center gap-2 text-orange-500 font-semibold text-xs uppercase tracking-widest mt-4 opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
-                {isAuthenticated && idx === 1 ? "View Dashboard" : "Enter"} <ArrowRight size={14} />
+              <div className="flex items-center gap-1.5 text-orange-500 font-semibold text-[9px] uppercase tracking-widest mt-2 group-hover:translate-x-1 transition-all">
+                {isAuthenticated && idx === 1 ? "Dashboard" : "Enter"} <ArrowRight size={10} />
               </div>
             </button>
           ))}
         </div>
 
-        <div className="relative w-full h-[500px] flex items-center justify-center">
-          <div className="absolute inset-0 bg-orange-500/5 rounded-full blur-[120px] pointer-events-none" />
+        {/* Globe Container - Height reduced and pulled up slightly */}
+        <div className="relative w-full h-[250px] md:h-[320px] flex items-center justify-center -mt-2">
+          <div className="absolute w-[200px] h-[200px] bg-orange-500/10 rounded-full blur-[80px] pointer-events-none" />
 
           {isClient && (
-            <Suspense fallback={<div className="w-64 h-64 border-2 border-orange-300/20 rounded-full animate-ping" />}>
-              <div className="w-full h-full scale-110 md:scale-125">
+            <Suspense fallback={<div className="w-12 h-12 border-2 border-orange-300/20 rounded-full animate-ping" />}>
+              {/* Lower scale ensures the whole globe is visible */}
+              <div className="w-full h-full scale-[0.85] md:scale-100">
                 <Globe />
               </div>
             </Suspense>
