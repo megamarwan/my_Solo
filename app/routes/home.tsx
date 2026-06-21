@@ -15,8 +15,22 @@ export function meta({ }: Route.MetaArgs) {
   ];
 }
 
-export default function Home() {
-  const navigate = useNavigate();
+const navItems = [
+  {
+    title: "Our Mission",
+    description: "Bridging the gap between global brands and the Libyan market.",
+    path: "/about",
+    icon: <Info className="text-orange-500" size={18} />,
+  },
+  {
+    title: "Contact Us",
+    description: "Visit our office in Bin Ashour or reach out online.",
+    path: "/contact",
+    icon: <MessageSquare className="text-orange-500" size={18} />,
+  },
+];
+
+function useAuthState() {
   const [isClient, setIsClient] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -25,30 +39,34 @@ export default function Home() {
     setIsAuthenticated(puter.auth.isSignedIn());
   }, []);
 
-  const navItems = [
-    {
-      title: "Our Mission",
-      description: "Bridging the gap between global brands and the Libyan market.",
-      path: "/about",
-      icon: <Info className="text-orange-500" size={18} />,
-    },
-    {
-      title: isAuthenticated ? "My Profile" : "Login or Sign up",
-      description: isAuthenticated
-        ? "Access your dashboard and manage your merchandise."
-        : "Login or Create an account to browse products.",
-      path: isAuthenticated ? "/profile" : "/authentication",
-      icon: isAuthenticated
-        ? <User className="text-orange-500" size={18} />
-        : <UserCircle className="text-orange-500" size={18} />,
-    },
-    {
-      title: "Contact Us",
-      description: "Visit our office in Bin Ashour or reach out online.",
-      path: "/contact",
-      icon: <MessageSquare className="text-orange-500" size={18} />,
-    },
-  ];
+  return { isClient, isAuthenticated };
+}
+
+export default function Home() {
+  const navigate = useNavigate();
+  const { isClient, isAuthenticated } = useAuthState();
+
+  const items = isAuthenticated
+    ? [
+        navItems[0],
+        {
+          title: "My Profile",
+          description: "Access your dashboard and manage your merchandise.",
+          path: "/profile",
+          icon: <User className="text-orange-500" size={18} />,
+        },
+        navItems[1],
+      ]
+    : [
+        navItems[0],
+        {
+          title: "Login or Sign up",
+          description: "Login or Create an account to browse products.",
+          path: "/authentication",
+          icon: <UserCircle className="text-orange-500" size={18} />,
+        },
+        navItems[1],
+      ];
 
   return (
     // justify-start + pt-4 ensures the title stays at the top
@@ -68,9 +86,9 @@ export default function Home() {
 
         {/* Navigation Cards - Shorter height */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 w-full mb-4">
-          {navItems.map((item, idx) => (
+          {items.map((item) => (
             <button
-              key={idx}
+              key={item.title}
               onClick={() => navigate(item.path)}
               className="group relative p-4 rounded-xl border border-white/[0.08] bg-[#0c0e23]/50 backdrop-blur-sm hover:bg-[#161a31] transition-all duration-500 text-left flex flex-col justify-between h-36 overflow-hidden"
             >
@@ -87,7 +105,7 @@ export default function Home() {
               </div>
 
               <div className="flex items-center gap-1.5 text-orange-500 font-semibold text-[9px] uppercase tracking-widest mt-2 group-hover:translate-x-1 transition-all">
-                {isAuthenticated && idx === 1 ? "Dashboard" : "Enter"} <ArrowRight size={10} />
+                Enter <ArrowRight size={10} />
               </div>
             </button>
           ))}
@@ -96,6 +114,8 @@ export default function Home() {
         {/* Globe Container - Height reduced and pulled up slightly */}
         <div className="relative w-full h-[250px] md:h-[320px] flex items-center justify-center -mt-2">
           <div className="absolute w-[200px] h-[200px] bg-orange-500/10 rounded-full blur-[80px] pointer-events-none" />
+
+          <Spotlight className="top-1/2 left-1/2 w-[200%] h-[200%]" fill="white" />
 
           {isClient && (
             <Suspense fallback={<div className="w-12 h-12 border-2 border-orange-300/20 rounded-full animate-ping" />}>

@@ -6,7 +6,7 @@ export default [
 
     // Static Pages
     route("about", "routes/about.tsx"),
-    route("contact", "routes/contact.tsx"),
+    route("contact", "routes/Contact.tsx"),
 
     // Auth & Profile
     route("authentication", "routes/authentication.tsx"),

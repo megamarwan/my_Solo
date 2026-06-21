@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin, Clock, ArrowLeft , DamIcon   } from "lucide-react";
+import { Mail, Phone, MapPin, Clock, ArrowLeft, Dam } from "lucide-react";
 import { useNavigate } from "react-router";
 
 export default function Contact() {
@@ -7,18 +7,18 @@ export default function Contact() {
   const contactDetails = [
     {
       title: "Email Us",
-      value: "hsu@jsmastery.pro",
+      value: "megas.marwanos@gmail.com",
       description: "Click to send us a direct message.",
       icon: <Mail className="text-orange-500" size={28} />,
-      link: "mailto:hsu@jsmastery.pro",
+      link: "mailto:megas.marwanos@gmail.com",
       color: "border-orange-500/20",
     },
     {
       title: "Call Us",
-      value: "+218 91-XXX-XXXX",
+      value: "+218 922864767",
       description: "Available Sun-Thu, 9am - 5pm.",
       icon: <Phone className="text-orange-500" size={28} />,
-      link: "tel:+21891XXXXXXX",
+      link: "tel:+218922864767",
       color: "border-orange-500/20",
     },
     {
@@ -47,7 +47,7 @@ export default function Contact() {
           onClick={() => navigate('/doodling')}
           className="flex items-center gap-2 text-gray-400 hover:text-orange-500 transition-colors mb-8 group"
         >
-          <DamIcon size={20} className="group-hover:-translate-x-1 transition-transform" />
+          <Dam size={20} className="group-hover:-translate-x-1 transition-transform" />
           doodling around
         </button>
 
@@ -63,9 +63,9 @@ export default function Contact() {
 
         {/* Contact Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {contactDetails.map((item, idx) => (
+          {contactDetails.map((item) => (
             <a
-              key={idx}
+              key={item.title}
               href={item.link}
               className={`group relative p-8 rounded-3xl border ${item.color} bg-[#0c0e23] hover:bg-[#161a31] transition-all duration-300 flex flex-col justify-between min-h-[250px] overflow-hidden`}
             >

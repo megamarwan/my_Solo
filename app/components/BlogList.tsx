@@ -1,14 +1,19 @@
+import { useCallback } from "react";
 import BlogCard, { type Blog } from "./BlogCard";
 
 interface BlogListProps {
   blogs: Blog[];
   title?: string;
-  onDelete?: (id: any) => void; 
+  onDelete?: (id: any) => void;
   onEdit?: (blog: Blog) => void;
-  
 }
 
-const BlogList = ({ blogs, title, onDelete ,onEdit}: BlogListProps) => {
+function BlogListItem({ blog, onDelete, onEdit }: { blog: Blog; onDelete?: (id: any) => void; onEdit?: (blog: Blog) => void }) {
+  const handleEdit = useCallback(() => onEdit?.(blog), [onEdit, blog]);
+  return <BlogCard key={blog.id} blog={blog} onDelete={onDelete} onEdit={handleEdit} />;
+}
+
+const BlogList = ({ blogs, title, onDelete, onEdit }: BlogListProps) => {
   if (blogs.length === 0) {
     return (
       <div className="text-center py-10 border-2 border-dashed border-white/10 rounded-3xl">
@@ -27,15 +32,9 @@ const BlogList = ({ blogs, title, onDelete ,onEdit}: BlogListProps) => {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-       {blogs.map((blog) => (
-  <BlogCard 
-    key={blog.id} 
-    blog={blog} 
-    onDelete={onDelete}
-    // FIX: Make sure the blog object is passed into onEdit
-    onEdit={() => onEdit && onEdit(blog)} 
-  />
-))}
+        {blogs.map((blog) => (
+          <BlogListItem key={blog.id} blog={blog} onDelete={onDelete} onEdit={onEdit} />
+        ))}
       </div>
     </div>
   );

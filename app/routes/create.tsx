@@ -24,8 +24,10 @@ const Create = () => {
         }).then(() => {
             console.log('new blog added');
             setIsPending(false);
-            // Navigate to the home page
             navigate('/profile');
+        }).catch(err => {
+            console.error('Failed to add blog:', err);
+            setIsPending(false);
         });
     }
 

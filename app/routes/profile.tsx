@@ -3,9 +3,9 @@ import { useNavigate } from "react-router";
 import puter from "@heyputer/puter.js";
 import { Plus, User, Loader2, RefreshCw, LogOut, HomeIcon } from "lucide-react";
 import BlogList from "~/components/BlogList";
-import BlogCard from "~/components/BlogCard"; 
+import BlogCard from "~/components/BlogCard";
 import useFetch from "~/components/useFetch";
-import type { Route } from "./+types/profile"; 
+import type { Route } from "./+types/profile";
 import useDelete from "~/components/useDelete";
 
 export function meta({}: Route.MetaArgs) {
@@ -17,11 +17,16 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Profile() {
   const [items, setItems] = useState<any[]>([]);
+  const [localBlogs, setLocalBlogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  
+
   const { performDelete, isDeleting } = useDelete('http://localhost:8000/blogs/');
   const { data: blogsData, isPending: blogsLoading } = useFetch<any[]>('http://localhost:8000/blogs/');
+
+  useEffect(() => {
+    if (blogsData) setLocalBlogs(blogsData);
+  }, [blogsData]);
 
   const fetchFiles = async () => {
     setLoading(true);
@@ -75,7 +80,7 @@ export default function Profile() {
     if (!window.confirm("Delete this blog post?")) return;
     const success = await performDelete(id);
     if (success) {
-      window.location.reload(); 
+      setLocalBlogs(prev => prev.filter(b => b.id !== id));
     } else {
       alert("Failed to delete the blog.");
     }
@@ -103,6 +108,8 @@ const handleUpdateRedirect = (item: any) => {
     }
 };
   useEffect(() => {
+    if (!puter.auth.isSignedIn())
+      navigate('/authentication')
     fetchFiles();
   }, []);
 
@@ -181,11 +188,11 @@ const handleUpdateRedirect = (item: any) => {
           {blogsLoading ? (
              <div className="flex justify-center py-10"><Loader2 className="animate-spin text-blue-500" size={32} /></div>
           ) : (
-            blogsData && (
-              <BlogList 
-                blogs={blogsData} 
-                onDelete={handleLocalDelete} 
-                onEdit={(blog) => handleUpdateRedirect(blog)} // Pass update handler
+            localBlogs.length > 0 && (
+              <BlogList
+                blogs={localBlogs}
+                onDelete={handleLocalDelete}
+                onEdit={(blog) => handleUpdateRedirect(blog)}
               />
             )
           )}

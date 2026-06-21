@@ -1,4 +1,5 @@
-import { FileText, User, Trash2, Edit3 } from "lucide-react";
+import { memo } from "react";
+import { FileText, User, Trash2 } from "lucide-react";
 
 export interface Blog {
   id: number | string;
@@ -11,10 +12,10 @@ export interface Blog {
 interface BlogCardProps {
   blog: Blog;
   onDelete?: (id: any) => void;
-  onEdit?: () => void; // Defined as an optional function
+  onEdit?: () => void;
 }
 
-const BlogCard = ({ blog, onDelete, onEdit }: BlogCardProps) => {
+const BlogCard = memo(({ blog, onDelete, onEdit }: BlogCardProps) => {
   return (
     <div className="relative bg-[#0c0e23] border border-white/10 p-6 rounded-3xl flex flex-col justify-between hover:border-orange-500/50 transition-all group overflow-hidden h-full">
 
@@ -70,6 +71,6 @@ const BlogCard = ({ blog, onDelete, onEdit }: BlogCardProps) => {
       </div>
     </div>
   );
-};
+});
 
 export default BlogCard;

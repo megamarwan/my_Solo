@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Loader2, Zap, Shield, Heart } from "lucide-react";
 
 interface PokemonData {
@@ -10,7 +10,7 @@ interface PokemonData {
 
 export default function PokemonFetcher() {
   const [pokemon, setPokemon] = useState<PokemonData | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [pokemonName, setPokemonName] = useState<string>("pikachu");
 
@@ -20,8 +20,8 @@ export default function PokemonFetcher() {
     try {
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name.toLowerCase()}`);
       if (!response.ok) throw new Error("Pokemon not found!");
-      
-      const data = await response.ok ? await response.json() : null;
+
+      const data = await response.json();
       setPokemon(data);
     } catch (err: any) {
       setError(err.message);
@@ -30,10 +30,6 @@ export default function PokemonFetcher() {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchPokemon(pokemonName);
-  }, []);
 
   return (
     <div className="p-6 max-w-sm mx-auto bg-[#1a1c2e] rounded-3xl border border-white/10 text-white shadow-xl">
@@ -69,7 +65,7 @@ export default function PokemonFetcher() {
           />
           <h2 className="text-3xl font-bold capitalize mb-4">{pokemon.name}</h2>
           
-          <div onClick = { ()=>console.log('hello world') }className="flex justify-center gap-2 mb-6">
+          <div className="flex justify-center gap-2 mb-6">
             {pokemon.types.map(t => (
               <span key={t.type.name} className="px-3 py-1 bg-white/10 rounded-full text-xs uppercase tracking-widest border border-white/5">
                 {t.type.name}

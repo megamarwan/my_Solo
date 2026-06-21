@@ -1,4 +1,3 @@
-import React from 'react';
 import { MapPin, Target, Mail, ArrowRight, Globe2, Building2, ShieldCheck } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import type { Route } from "./+types/about";
